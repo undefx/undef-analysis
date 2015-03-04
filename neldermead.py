@@ -52,7 +52,7 @@ class NelderMead:
   https://en.wikipedia.org/wiki/Nelder%E2%80%93Mead_method
   '''
 
-  def __init__(self, objective, limit_iterations = None, limit_value = None, limit_time = None, alpha = 1.0, gamma = 2.0, rho = -0.5, sigma = 0.5):
+  def __init__(self, objective, limit_iterations=None, limit_value=None, limit_time=None, alpha=1.0, gamma=2.0, rho=-0.5, sigma=0.5):
     if limit_iterations is None and limit_value is None and limit_time is None:
       raise Exception('at least one of (limit_iterations, limit_value, limit_time) must be given')
     # the objective function - takes a single tuple as an argument
@@ -72,7 +72,7 @@ class NelderMead:
     # the reduction coefficient (default 1/2)
     self._sigma = sigma
 
-  def get_simplex(self, numDimensions, centroid = (), radius = 1.0):
+  def get_simplex(self, numDimensions, centroid=(), radius=1.0):
     ''' creates a simplex around some point using the specified radius '''
     if len(centroid) == 0:
       centroid = tuple([0 for i in range(numDimensions)])
