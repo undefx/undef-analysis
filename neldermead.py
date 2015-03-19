@@ -85,7 +85,7 @@ class NelderMead:
       point = Point(tuple(coords))
       point._set_value(self._objective)
       points.append(point)
-    return points;
+    return points
 
   def run(self, simplex):
     ''' iterates until either the target is found, the evaluation limit is reached, or the time limit is exceeded '''
