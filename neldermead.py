@@ -81,7 +81,7 @@ class NelderMead:
       if i < numDimensions:
         coords = [(centroid[j] + (radius if i == j else 0)) for j in range(numDimensions)]
       else:
-        coords = [(-(numDimensions ** -.5) * radius) for j in range(numDimensions)]
+        coords = [centroid[j] + ((numDimensions ** -.5) * -radius) for j in range(numDimensions)]
       point = Point(tuple(coords))
       point._set_value(self._objective)
       points.append(point)
