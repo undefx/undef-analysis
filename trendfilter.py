@@ -76,9 +76,12 @@ def trend_filter_path(values, order):
   # fill the the path from min_knots to max_knots (decreasing lambda)
   path = []
   for num_knots in range(min_knots, max_knots + 1):
-    result = find_lambda(values, order, num_knots, lambda_max, threshold=1e-3)
-    lambda_max = result[-1]
-    path.append(result)
+    result = find_lambda(values, order, num_knots, lambda_max)
+    if result is not None:
+      lambda_max = result[-1]
+      path.append(result)
+    else:
+      break
   return path[::-1]
 
 # cross-validated selection of trend filtering path
