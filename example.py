@@ -2,6 +2,7 @@ import random
 from mds import MDS
 from pca import PCA
 from kmeans import KMeans
+import trendfilter
 import matplotlib.pyplot as plt
 
 # test data
@@ -68,4 +69,14 @@ plt.scatter([p[0] for p in input], [p[1] for p in input], c=rainbow)
 plt.scatter([p[0] for p in pca_output], [4.0 for i in range(n)], c=rainbow)
 plt.scatter([p[0] for p in mds_output], [4.2 for i in range(n)], c=rainbow)
 plt.scatter([p[0] for p in pca_mds_output], [4.4 for i in range(n)], c=rainbow)
+plt.show()
+
+# trend filtering
+values = [1.051, 1.152, 0.971, 0.895, 0.844, 0.815, 0.823, 0.675, 0.632, 0.642, 0.530, 0.644, 0.668, 0.706, 0.804, 0.908, 1.006, 1.036, 1.076, 1.161, 1.198, 1.279, 1.292, 1.428, 1.398, 1.458, 1.565, 1.343, 1.481, 1.634, 1.831, 2.105, 1.736, 1.551, 1.629, 1.760, 1.927, 1.920, 2.100, 2.240, 2.219, 2.167, 2.389, 1.965, 1.842, 1.687, 1.531, 1.379, 1.295, 1.395, 1.325, 1.231]
+error_curve, tf_min, tf_1se = trendfilter.cross_validated_trend_filter(values, 2)
+fit, error, knots, lambda_ = tf_1se
+print('l=%.3f err=%.3f %d knots:'%(lambda_, error, len(knots)), [k[0] for k in knots])
+x = [i/(len(values)-1) for i in range(len(values))]
+plt.plot(x, values, c='#0080ff')
+plt.plot(x, fit, c='#ff8000')
 plt.show()
