@@ -52,7 +52,7 @@ class NelderMead:
   https://en.wikipedia.org/wiki/Nelder%E2%80%93Mead_method
   '''
 
-  def __init__(self, objective, limit_iterations=None, limit_value=None, limit_time=None, alpha=1.0, gamma=2.0, rho=-0.5, sigma=0.5):
+  def __init__(self, objective, limit_iterations=None, limit_value=None, limit_time=None, alpha=1.0, gamma=2.0, rho=-0.5, sigma=0.5, silent=False):
     if limit_iterations is None and limit_value is None and limit_time is None:
       raise Exception('at least one of (limit_iterations, limit_value, limit_time) must be given')
     # the objective function - takes a single tuple as an argument
@@ -71,6 +71,8 @@ class NelderMead:
     self._rho = rho
     # the reduction coefficient (default 1/2)
     self._sigma = sigma
+    # whether to suppress progress reports
+    self._silent = silent
 
   def get_simplex(self, numDimensions, centroid=(), radius=1.0):
     ''' creates a simplex around some point using the specified radius '''
@@ -121,11 +123,13 @@ class NelderMead:
       lt = self._timer if self._timer is not None else 0
       if current_timer >= print_timer + 1:
         print_timer = current_timer
-        print('NM [%d -> %d] [%.3f -> %.3f] [%.1f -> %.1f]'%(Point.get_num_evaluations(), li, simplex[-1]._value, lv, current_timer, lt))
+        if not self._silent:
+          print('NM [%d -> %d] [%.3f -> %.3f] [%.1f -> %.1f]'%(Point.get_num_evaluations(), li, simplex[-1]._value, lv, current_timer, lt))
       if self._target is not None and simplex[-1]._value < self._target:
         break
     list.sort(simplex, key = lambda point: point._value)
-    print('NM [%d -> %d] [%.3f -> %.3f] [%.1f -> %.1f]'%(Point.get_num_evaluations(), li, simplex[0]._value, lv, current_timer, lt))
+    if not self._silent:
+      print('NM [%d -> %d] [%.3f -> %.3f] [%.1f -> %.1f]'%(Point.get_num_evaluations(), li, simplex[0]._value, lv, current_timer, lt))
     return simplex[0]
 
 if __name__ == "__main__":
