@@ -52,6 +52,14 @@ class NelderMead:
   https://en.wikipedia.org/wiki/Nelder%E2%80%93Mead_method
   '''
 
+  @staticmethod
+  def optimize(objective, guess, radius=1.0, limit_iterations=100, limit_value=1e-3, limit_time=1, alpha=1.0, gamma=2.0, rho=-0.5, sigma=0.5, silent=False):
+    ''' convenience method for one-line optimization  '''
+    nm = NelderMead(objective, limit_iterations, limit_value, limit_time, alpha, gamma, rho, sigma, silent)
+    if type(guess) == int:
+      guess = [0] * guess
+    return nm.run(nm.get_simplex(len(guess), guess, radius))
+
   def __init__(self, objective, limit_iterations=None, limit_value=None, limit_time=None, alpha=1.0, gamma=2.0, rho=-0.5, sigma=0.5, silent=False):
     if limit_iterations is None and limit_value is None and limit_time is None:
       raise Exception('at least one of (limit_iterations, limit_value, limit_time) must be given')
@@ -140,5 +148,8 @@ if __name__ == "__main__":
   solver = NelderMead(himmelblau, limit_iterations=100, limit_value=0.001, limit_time=1)
   simplex = solver.get_simplex(2, (0, 0), 0.1)
   best = solver.run(simplex)
-  print('num evaluations:', Point.get_num_evaluations())
   print('best:', best)
+  print('num evaluations:', Point.get_num_evaluations())
+
+  # more compact example
+  print('best:', NelderMead.optimize(himmelblau, 2))
